@@ -120,10 +120,10 @@ During each Learning Cycle, the Robot System is going to accumulate sufficient d
 
 One can interpret it as an alien life with vision and grasping capabilities sitting in front of a desk, being asked to pick up objects from Tray 1 and place it in Tray 2. The alien only knows that it can "grasp" (with gripper) and it can "see" (with camera), but has never actually grasped from or seen anything in the trays before (establishing hand-eye-coordination). And it is going to "learn" how to do it, starting with "blindly" (before hand-eye-coordination is established) moving its gripper towards "possible" (CEMs) coordinates above an object and attempts to pick it up. Through the repetition of these attempts with validation from its "eye", a learning process is established (through the updated weights of the neural network after each Learning Cycle).
 
-The 1st Learning Cycle starts with zero weights in the network, which leaves with three possible ways to start the task. But overall, this is something very similar to the "claw machine" picking up toys from the box, either you start by letting the robot to do it randomly, do it blindly, or do it under guidance. (It would be interesting to see an "intelligent" claw machine built following similar structure, which should be much simpler and also interesting.)
+The 1st Learning Cycle starts with randomized initial weights in the network, which leaves with three possible ways to start the task. But overall, this is something very similar to the "claw machine" picking up toys from the box, either you start by letting the robot to do it randomly, do it blindly, or do it under guidance. (It would be interesting to see an "intelligent" claw machine built following similar structure, which should be much simpler and also interesting.)
 
-1. Start the robot with all zero values is definitely possible, but unnecessarily. One can still use the original task structure by adding a few variations to the weights of the neural network so that it can be initialized. No matter how bad or good the initialized weights are, the robot is expected to correct itself later through the learning process.
-  * advantage would be the reuse of code, and the disadvantage would be a much larger dataset to make sure the learned model can be corrected through learning
+1. Start the robot with randomized initial values for the neural network to start with. No matter how bad or good the initialized weights are, the robot is expected to correct itself later through the learning process. But just not necessary. This is just unnecessary unless a special purpose needs to be achieved.
+  * advantage would be the reuse of code, and the disadvantage would be a much larger dataset to make sure the learned model can be corrected through learning (potentially too large to be meaningful).
 
 2. Start the robot with total blind grasps, i.e. just reach out to any one of all possible workspace and perform a grasp and check the results right after.
   * advantage would be the simplicity and automation of programming in the 1st Learning Cycle, and the disadvantage would be the lack of purpose, which may result in very low successful grasp in the beginning, slowing down the learning process.
@@ -173,10 +173,10 @@ Each Grip Cycle (n) consists of certain Integrated Task Flows (ITFs), including 
 * __ITF-Serv: CEMs => Move x => Shot x (repeat up to 10 times in a Grasp Cycle since start)__
   * input: I_n_x-1 (if x = 1, then I_n_x_1 = I_n_01), g_m
   * processed: p_n_x
-  * output: close (if p_n_x > 90%), raise and v_n_x (if p_n_x <= 50%), or v_n_x (if 90% >= p_n_x > 50%), I_n_x
+  * output: close (if p_n_x > 90%), v_n_x (="raise") (if p_n_x <= 50%), or v_n_x (if 90% >= p_n_x > 50%), I_n_x
   * This ITF aims at applying the network based on the given input and decide (p_n) whether a successful grasp can be performed. p_n refers to the ratio between the calculated grasp success possibility at the current waypoint (g_m(I_n_x_1,close)) and that of at a new waypoint (g_m(I_n_x-1,v_n_x)).
     * if p_n > 90%: meaning the network is confident enough to perform a successful grasp at the current waypoint, comparing to all possible new waypoints it calculated during ITF-CEMs, decides to "close" the gripper, attempting the object grasping.
-    * if p_n <= 50%: meaning the network has no confident at all to perform a successful grasp at the current waypoint, therefore decides to "raise" the gripper 10 cm higher for safety, and follows the calculated motor command v_n_x to a new waypoint in a new Grip Cycle.
+    * if p_n <= 50%: meaning the network has no confident at all to perform a successful grasp at the current waypoint, therefore decides replace the calculated motor command v_n_x with a command to "raise" the gripper 10 cm higher for safety, and executes this new motor command v_n_x (="raise") to a new waypoint in a new Grip Cycle.
     * else (if 90% >= p_n > 50%): meaning the network has some confident that it can perform a successful grasp in this Grip Cycle at the next waypoint, therefore decides to follow the calculated motor command v_n_x to a new waypoint and continue this Grip Cycle.
 
 * __ITF-CEMs: CEMs = CEM1 => CEM2 => CEM 3 => heuristics rules(repeat up to 10 times in a Grasp Cycle since start)__
@@ -194,16 +194,16 @@ Each Grip Cycle (n) consists of certain Integrated Task Flows (ITFs), including 
     * Shot x2 takes a picture of Tray 1 without the gripper after the gripper Move to Tray 2.
     * Shot x3 takes a picture of the gripper and the objects in Tray 2 after Drop.
 
-## 1st Possible Grip Cycles (n = 5,000) during Learning Cycle m = 1
+## 1st Possible Grip Cycles (n = 5,000) during Learning Cycle m = 1 (pass)
 
-The following example demonstrates the 1st possible structure of the 1st Learning Cycle, as introduced earlier and repeated as below. This is a simple repetition of the Typical Grip Cycles with zero initial values in g.
+The following example demonstrates the 1st possible structure of the 1st Learning Cycle, as introduced earlier and repeated as below. This is a simple repetition of the Typical Grip Cycles with randomized initial values in g_m. This is just unnecessary unless a special purpose needs to be achieved.
 
 ```
-Start the robot with all zero values is definitely possible, but unnecessarily. One can still use the original task structure by adding a few variations to the weights of the neural network so that it can be initialized. No matter how bad or good the initialized weights are, the robot is expected to correct itself later through the learning process.
-  * advantage would be the reuse of code, and the disadvantage would be a much larger dataset to make sure the learned model can be corrected through learning
+Start the robot with randomized initial values for the neural network to start with. No matter how bad or good the initialized weights are, the robot is expected to correct itself later through the learning process. But just not necessary. This is just unnecessary unless a special purpose needs to be achieved.
+  * advantage would be the reuse of code, and the disadvantage would be a much larger dataset to make sure the learned model can be corrected through learning (potentially too large to be meaningful).
 ```
 
-## 2nd Possible Grip Cycles (n = 5,000) during Learning Cycle m = 1
+## 2nd Possible Grip Cycles (n = 5,000) during Learning Cycle m = 1 (chosen)
 
 The following example demonstrates the 2nd possible structure of the 1st Learning Cycle, as introduced earlier and repeated as below. This simplifies the ITF-Serv process in the 1st Learning Cycle.
 
@@ -240,7 +240,7 @@ __Learning Cycle m = 1__:
   * output: null
   * This ITF aims at randomly selecting a motor command v_n, leading to a new waypoint in workspace of Tray 1, attempting a blind grasp, "hoping" to get lucky and pick up something. One may be able to relate this to a man trying to pick up rocks from a shallow muddy water, who is left with no other options but to blindly reach into the water and try his luck.
 
-## 3rd Possible Grip Cycles (n = 5,000) during Learning Cycle m = 1
+## 3rd Possible Grip Cycles (n = 5,000) during Learning Cycle m = 1 (optional for optimization)
 
 The following example demonstrates the 3rd possible structure of the 1st Learning Cycle, as introduced earlier.
 
