@@ -1,0 +1,37 @@
+<package>
+  <name>urobotiq</name>
+  <version>0.0.0</version>
+  <description>
+      Drivers, description, and utilities for AncoraSIR URobotiq with a Universal Robotics' UR5 Manipulator and a Robotiq's Adaptive 3 Finger Gripper, assembled with Robotiq's FT300 Sensor.
+  </description>
+
+  <maintainer email="ancorasir@gmail.com">ancorasir</maintainer>
+
+  <license>TODO</license>
+
+	<url type="website">http://ancorasir.com</url>
+
+  <author email="ancorasir@gmail.com">ancorasir</author>
+
+  <!-- The *_depend tags are used to specify dependencies -->
+  <!-- Dependencies can be catkin packages or system dependencies -->
+  <!-- Examples: -->
+  <!-- Use build_depend for packages you need at compile time: -->
+  <!--   <build_depend>message_generation</build_depend> -->
+  <!-- Use buildtool_depend for build tool packages: -->
+  <!--   <buildtool_depend>catkin</buildtool_depend> -->
+  <!-- Use run_depend for packages you need at runtime: -->
+  <!--   <run_depend>message_runtime</run_depend> -->
+  <!-- Use test_depend for packages you need only for testing: -->
+  <!--   <test_depend>gtest</test_depend> -->
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <run_depend>urobotiq_description</run_depend>
+  <run_depend>urobotiq_gazebo</run_depend>
+  <run_depend>urobotiq_moveit_config</run_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+</package>

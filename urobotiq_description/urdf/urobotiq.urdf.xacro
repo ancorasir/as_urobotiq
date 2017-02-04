@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="urobotiq">
+
+  <!-- create world and world_link (dummy)
+  world => world_link
+  -->
+  <link name="world" />
+  <link name="world_link" />
+  <joint name="world_virtural_joint" type="fixed">
+    <parent link="world" />
+    <child link= "world_link" />
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+  </joint>
+
+  <!-- setup Robot System
+  world_link => pedestal
+  pedestal => arm => ft_sensor => gripper
+  world_link => camera (rgbd)
+  world_link => camera (recording)
+  world_link => desk => tray1/2 => objects
+  -->
+
+  <xacro:include filename="$(find urobotiq_description)/urdf/pedestal.urdf.xacro" />
+
+  <joint name="world_pedestal_joint" type="fixed">
+    <parent link="world_link" />
+    <child link= "pedestal_base_link" />
+    <origin xyz="0.0 0.0 0.989" rpy="0.0 0.0 0.0" />
+  </joint>
+
+
+  <xacro:include filename="$(find urobotiq_description)/urdf/arm_ur5.urdf.xacro" />
+
+  <joint name="pedestal_arm_joint" type="fixed">
+    <parent link="pedestal_base_link" />
+    <child link= "base_link" />
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+  </joint>
+
+
+  <xacro:include filename="$(find urobotiq_description)/urdf/gripper_a3f.urdf.xacro" />
+
+  <joint name="arm_gripper_joint" type="fixed">
+    <parent link="ee_link" />
+    <child link= "palm_base_link" />
+    <origin xyz="0.05 0.0 0.0" rpy="0.0 0.0 -1.5708" />
+  </joint>
+
+
+  <xacro:include filename="$(find urobotiq_description)/urdf/camera_kinect.gazebo.xacro" />
+
+
+  <xacro:include filename="$(find urobotiq_description)/urdf/camera_xtion.gazebo.xacro" />
+  
+
+</robot>

@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="pedestal" >
+  <!-- base ref at 0, 0, 0, robot assembly ref measured at 0, 0, 0.989 -->
+
+  <link name="pedestal_base_link">
+    <inertial>
+      <origin
+        xyz="-1.7398E-11 0.21585 -0.00042677"
+        rpy="0 0 0" />
+      <mass
+        value="56.203" />
+      <inertia
+        ixx="4.0527"
+        ixy="-2.7363E-11"
+        ixz="-0.0058216"
+        iyy="4.2814"
+        iyz="8.5136E-05"
+        izz="4.2712" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 -0.4945"
+        rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.989" radius="0.1"/>
+        <!--
+        <mesh
+          filename="package://urobotiq_description/meshes/pedestal_base_link.dae" />
+        -->
+      </geometry>
+      <material name="LightGrey">
+        <color rgba="0.7 0.7 0.7 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 -0.4945"
+        rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.989" radius="0.1"/>
+        <!--
+        <mesh
+          filename="package://urobotiq_description/meshes/pedestal_base_link.STL" />
+        -->
+      </geometry>
+    </collision>
+  </link>
+
+</robot>

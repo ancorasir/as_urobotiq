@@ -1,0 +1,16 @@
+<launch>
+  <include file="$(find urobotiq_gazebo)/launch/urobotiq.launch" />
+  <rosparam file="$(find urobotiq_gazebo)/controller/urobotiq_gazebo_control.yaml" command="load" />
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+    output="screen" ns="/urobotiq" args="joint_state_controller
+    shoulder_pan_joint_position_controller
+    shoulder_lift_joint_position_controller
+    elbow_joint_position_controller
+    wrist_1_joint_position_controller
+    wrist_2_joint_position_controller
+    wrist_3_joint_position_controller" />
+    <node name="robot_state_publisher2" pkg="robot_state_publisher" type="robot_state_publisher"
+      respawn="false" output="screen">
+      <remap from="/joint_states" to="/urobotiq/joint_states" />
+    </node>
+</launch>

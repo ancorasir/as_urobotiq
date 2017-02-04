@@ -1,0 +1,10 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: urobotiq_description
+    relative_path: urdf/urobotiq.urdf.xacro
+  SRDF:
+    relative_path: config/urobotiq.srdf
+  CONFIG:
+    author_name: ancorasir
+    author_email: ancorasir@gmail.com
+    generated_timestamp: 1486102968
