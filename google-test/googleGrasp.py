@@ -1,7 +1,7 @@
 """Builds the googleGrasp network.
-    
+
 Implements the inference/loss/training pattern for model building.
-    
+
 1. inference() - Builds the model as far as is required for running the network forward to make predictions.
 2. loss() - Adds to the inference model the layers required to generate loss.
 3. training() - Adds to the loss model the Ops required to generate and apply gradients.
@@ -10,6 +10,8 @@ This file is used by "googleGrasp_train.py" and not meant to be run.
 Reference:
 /tensorflow/examples/tutorials/mnist.py
 /tensorflow/tutorials/image/cifar10/cifar10.py
+
+By Fang Wan
 """
 import numpy as np
 import tensorflow as tf
@@ -36,14 +38,14 @@ def BatchNorm(input, is_training=True, scope=None):
     return z
 
 # Construct model
-def inference(images, motion, is_training):
+def inference(images, motions, is_training):
     """Built the google grasp model up tp where it may be used for inference.
 
     Args:
         images: from inputs(), [batch, in_height, in_width, in_channels], in_height=472*2, width=472, in_channel=3
-        motion: from inputs(), [batch, 5]
+        motions: from inputs(), [batch, 5]
         is_training: bool placeholder, if inference is for training or testing
-        
+
     Returns:
         logits
     """
@@ -94,7 +96,7 @@ def inference(images, motion, is_training):
     with tf.variable_scope('fc1'):
         weights = tf.get_variable('weights', [5, 64], initializer=tf.truncated_normal_initializer(stddev = 0.01, dtype=tf.float32))
         biases = tf.get_variable('biases', [64], initializer=tf.constant_initializer(0.1))
-        fc1 = tf.nn.relu(tf.matmul(motion, weights) + biases)
+        fc1 = tf.nn.relu(tf.matmul(motions, weights) + biases)
         fc1 = tf.reshape(fc1,shape=[-1, 1, 1, 64])
     # pointwise addition of image input and motor command input
     x = tf.add(tf.tile(fc1, [1, 53, 27, 1]), pool2)
@@ -177,18 +179,17 @@ def loss(logits, labels):
     """
     # crossentropy H(p,q) = - sum{ p(x)log(q(x)) }, where p is the true distribution
     # http://stats.stackexchange.com/questions/167787/cross-entropy-cost-function-in-neural-network
-    labels = tf.cast(labels, tf.int64)
-    loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits, labels))
+    loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits, labels), name='xentropy_mean')
+    return loss
 
 def training(loss, learning_rate):
     """Sets up the training Ops.
-        
-    Creates a summarizer to track the loss over time in TensorBoard.
+
     Creates an optimizer and applies the gradients to all trainable variables.
-        
+
     The Op returned by this function is what must be passed to the
     `sess.run()` call to cause the model to train.
-        
+
     Args:
     loss: Loss tensor, from loss().
     learning_rate: The learning rate to use for gradient descent.
@@ -197,7 +198,7 @@ def training(loss, learning_rate):
     train_op: The Op for training.
     """
     # Add a scalar summary for the snapshot loss.
-    tf.scalar_summary(loss.op.name, loss)
+    #tf.scalar_summary(loss.op.name, loss)
     # Create the gradient descent optimizer with the given learning rate.
     optimizer = tf.train.GradientDescentOptimizer(learning_rate)
     # Create a variable to track the global step.
@@ -206,4 +207,3 @@ def training(loss, learning_rate):
     # (and also increment the global step counter) as a single training step.
     train_op = optimizer.minimize(loss, global_step=global_step)
     return train_op
-
