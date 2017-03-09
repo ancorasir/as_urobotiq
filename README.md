@@ -8,7 +8,9 @@
 
 This is a project under-development at the Sustainable and Intelligent Robotics ([SIR](http://ancorasir.com)) Group , under the supervision of Dr. Chaoyang Song.
 
-Song, C., 2017, as_urobotiq: A general purpose robot for autonomous pick-and-place with deep learning. Github.com/ancorasir/as_urobotiq, [![DOI](https://zenodo.org/badge/80539341.svg)](https://zenodo.org/badge/latestdoi/80539341)
+Song, C. & Wan, F., 2017, as_urobotiq: A general purpose robot for autonomous pick-and-place with deep learning. Github.com/ancorasir/as_urobotiq, [![DOI](https://zenodo.org/badge/80539341.svg)](https://zenodo.org/badge/latestdoi/80539341)
+
+Current branch: master. To simulate the robots, go to branch: ros-indigo. To test tensorflow, go to branch: tf
 
 
 # Research Goal
@@ -171,7 +173,7 @@ Each Grip Cycle (n) consists of certain Integrated Task Flows (ITFs), including 
   * This ITF aims at initiate the pick-and-place process with the initial two pictures without and with the gripper. It takes an initial picture with Shot 00 (I_n_00) of the target tray (without gripper), following the motor command (v_n_0) that moves the gripper into a fixed coordinate inside the workspace of the tray waiting to start the pick-and-place task, and take another initial picture with Shot 01 (I_n_01) with gripper inside.
 
 * __ITF-Serv: CEMs => Move x => Shot x (repeat up to 10 times in a Grasp Cycle since start)__
-  * input: I_n_x-1 (if x = 1, then I_n_x_1 = I_n_01), g_m
+  * input: I_n_x-1 (if x = 1, then I_n_x-1 = I_n_01), g_m
   * processed: p_n_x
   * output: close (if p_n_x > 90%), v_n_x (="raise") (if p_n_x <= 50%), or v_n_x (if 90% >= p_n_x > 50%), I_n_x
   * This ITF aims at applying the network based on the given input and decide (p_n) whether a successful grasp can be performed. p_n refers to the ratio between the calculated grasp success possibility at the current waypoint (g_m(I_n_x_1,close)) and that of at a new waypoint (g_m(I_n_x-1,v_n_x)).
