@@ -166,7 +166,7 @@ Each Grip Cycle (n) consists of certain Integrated Task Flows (ITFs), including 
 
 * __ITF-SoMo: Shot 00 => Move 00 => Shot 01__
   * input: null
-  * generate: v_n_0
+  * processed: v_n_0
   * output: I_n_00, I_n_01
   * This ITF aims at initiate the pick-and-place process with the initial two pictures without and with the gripper. It takes an initial picture with Shot 00 (I_n_00) of the target tray (without gripper), following the motor command (v_n_0) that moves the gripper into a fixed coordinate inside the workspace of the tray waiting to start the pick-and-place task, and take another initial picture with Shot 01 (I_n_01) with gripper inside.
 
