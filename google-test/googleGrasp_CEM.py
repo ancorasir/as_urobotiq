@@ -25,14 +25,18 @@ def CEM():
                 Xs.append(X[0])
                 N += 1
         Xs = np.array(Xs)
-        # selecting the 6 best grasp directions by inferring to the network
+
+        # select the 6 best grasp directions by inferring to the network
+        # get images input from camera
+        # load the trained network, ??need more work
         # performance = np.sum(Xs, axis=1) # for demonstration
-        images_batch, motions_batch,
         is_training = tf.placeholder(tf.bool, name='is_training')
-        performance = gg.inference(images_batch, motions_batch, is_training)
+        performance = gg.inference(images, Xs, is_training)
+
         # Sort X by objective function values (in ascending order)
         best_idx = np.argsort(performance)[-6:]
         best_Xs = np.array(Xs)[best_idx,:]
+
         # Update parameters of distribution from the 6 best grasp directions
         mean = np.mean(best_Xs, axis=0)
         cov = np.cov(best_Xs, rowvar=0)
