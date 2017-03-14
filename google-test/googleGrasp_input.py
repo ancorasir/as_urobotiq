@@ -3,8 +3,6 @@ Reading grasp data in TFrecords format for training.
 reference resources:
 https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/how_tos/reading_data/fully_connected_reader.py
 https://indico.io/blog/tensorflow-data-inputs-part1-placeholders-protobufs-queues/
-
-By Fang Wan
 '''
 
 import tensorflow as tf
@@ -27,7 +25,7 @@ def read_and_decode_single_example(filename_queue):
         })
     # calculate successful label
     cond = tf.greater(features['gripper/status'], 0.01)
-    label = tf.select(cond, 1.0, 0.0)
+    label = tf.where(cond, 1.0, 0.0)
     # calculate input images to the network
     grasp = tf.image.decode_jpeg(features['grasp/image/encoded'], channels=3)
     grasp_0 = tf.image.decode_jpeg(features['grasp/0/image/encoded'], channels=3)
@@ -36,8 +34,8 @@ def read_and_decode_single_example(filename_queue):
     cropped_grasp_0 = tf.random_crop(grasp_0, [472, 472, 3])
     cropped_grasp_1 = tf.random_crop(grasp_1, [472, 472, 3])
     images = tf.stack(
-                      [tf.concat(0, [cropped_grasp,cropped_grasp_0]),
-                       tf.concat(0, [cropped_grasp,cropped_grasp_1])
+                      [tf.concat([cropped_grasp,cropped_grasp_0], 0),
+                       tf.concat([cropped_grasp,cropped_grasp_1], 0)
                        ], axis=0
                       )
     images = tf.cast(images, tf.float32) # [2,472*2,472,3]
@@ -64,6 +62,8 @@ def inputs(filenames, batch_size, num_epochs):
         * labels is a float tensor with shape [batch_size] with the true label.
         Note that an tf.train.QueueRunner is added to the graph, which
         must be run using e.g. tf.train.start_queue_runners().
+
+    By Fang Wan
     """
     if not num_epochs: num_epochs = None
     with tf.name_scope('input'):

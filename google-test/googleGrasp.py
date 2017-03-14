@@ -179,7 +179,7 @@ def loss(logits, labels):
     """
     # crossentropy H(p,q) = - sum{ p(x)log(q(x)) }, where p is the true distribution
     # http://stats.stackexchange.com/questions/167787/cross-entropy-cost-function-in-neural-network
-    loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits, labels), name='xentropy_mean')
+    loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(labels = labels, logits = logits), name='xentropy_mean')
     return loss
 
 def training(loss, learning_rate):
