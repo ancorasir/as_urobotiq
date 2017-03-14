@@ -73,6 +73,6 @@ def inputs(filenames, batch_size, num_epochs):
         images, motions, labels = read_and_decode_single_example(filename_queue)
         # groups examples into batches randomly
         # shuffle_batch constructs a RandomShuffleQueue and proceeds to fill it with individual image and labels. This filling is done on a separate thread with a QueueRunner. The RandomShuffleQueue accumulates examples sequentially until it contains batch_size +min_after_dequeue examples are present. It then selects batch_size random elements from the queue to return.
-        images_batch, motions_batch, labels_batch = tf.train.shuffle_batch([images, motions, labels], batch_size=batch_size, capacity=1000 + 3 * batch_size, min_after_dequeue=1000)
+        images_batch, motions_batch, labels_batch = tf.train.shuffle_batch([images, motions, labels], batch_size=batch_size, capacity=50 + 3 * batch_size, min_after_dequeue=50)
         actual_batch_size = images_batch.get_shape()[0].value*images_batch.get_shape()[1].value
         return tf.reshape(images_batch, [actual_batch_size, 472*2, 472, 3]), tf.reshape(motions_batch, [actual_batch_size, 5]), tf.reshape(labels_batch, [actual_batch_size, 1])

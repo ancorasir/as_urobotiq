@@ -13,8 +13,8 @@ import googleGrasp as gg
 import googleGrasp_input as ggIn
 import tensorflow as tf
 
-batch_size = 1000
-num_epochs = 1
+batch_size = 10
+num_epochs = 2
 learning_rate = 0.01
 
 def run_training():
@@ -22,7 +22,7 @@ def run_training():
     # Tell TensorFlow that the model will be built into the default Graph.
     with tf.Graph().as_default():
         # list of all the tfrecord files under /grasping_dataset_058/
-        TRAIN_FILES = tf.train.match_filenames_once("/Users/wanfang/Downloads/datasets/grasping/grasping_dataset_058/grasping_dataset_*.*")
+        TRAIN_FILES = tf.train.match_filenames_once("/home/ancora-sirlab/grasp_dataset/grasping/grasping_dataset_058/grasping_dataset_058.tfrecord-00000-of-00068")
         # Input images and labels.
         images_batch, motions_batch, labels_batch = ggIn.inputs(TRAIN_FILES, batch_size=batch_size, num_epochs=num_epochs)
         # Build a Graph that computes predictions from the inference model.
@@ -51,7 +51,7 @@ def run_training():
                 # Run one step of the model
                 _, loss_value = sess.run([train_op, loss], feed_dict={is_training: True})
                 duration = time.time() - start_time
-                if step % 100 == 0:
+                if step % 10 == 0:
                     print('Step %d: loss = %.2f (%.3f sec)' % (step, loss_value, duration))
                 step += 1
         except tf.errors.OutOfRangeError:
