@@ -63,7 +63,7 @@ Dr. WAN, Fang
 Mr. CHEN, Yaohui
 * Research Assistant
 
-ALDRIDGE, Annie | DENG, Yuntian | HE, Xiaoyi | HU, Yuqian | LAU, Oscar | LE, Sing | TAN, Qiaochu | WANG, Herong | XIA, Tian | ZHANG, Jingwei
+XIA, Tian | HE, Xiaoyi | DENG, Yuntian | ZHANG, Jingwei | JIANG, Will | ONG, Ben
 * Team Members
 
 
