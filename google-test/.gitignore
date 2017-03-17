@@ -1,0 +1,6 @@
+.DS_Store
+*.pyc
+__pycache__
+*.swp
+grasping_dataset_057/*.png
+grasping_dataset_057/*.tfrecord
