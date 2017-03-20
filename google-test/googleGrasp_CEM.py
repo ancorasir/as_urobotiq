@@ -1,5 +1,6 @@
 """Cross Entropy Method to infer the best grasp direction for date collection.
 Not yet finished. For demonstration of CEM method.
+
 By Fang Wan
 """
 import googleGrasp as gg
@@ -16,18 +17,18 @@ def CEM():
         is_training = tf.placeholder(tf.bool, name='is_training')
         inference = gg.inference(images, motions, is_training)
         init_op = tf.group(tf.global_variables_initializer(), tf.local_variables_initializer())
+        saver = tf.train.Saver()
         sess = tf.Session()
         sess.run(init_op)
+        # restore the trained network to calculate inference
+        saver.restore(sess, tf.train.latest_checkpoint('./'))
 
-        # start the sampling from Gaussian distribution
-        # Start input enqueue threads.
-        # Queue runner is a thread that uses a session and calls an enqueue op over and over again.
-        # start_queue_runners starts threads for all queue runners collected in the graph
         coord = tf.train.Coordinator()
         threads = tf.train.start_queue_runners(sess=sess, coord=coord)
         try:
             while not coord.should_stop():
                 print('start cem')
+                # start the sampling from Gaussian distribution
                 mean = [0, 0, 0, 0, 0]
                 cov = np.diagflat([1, 1, 1, 1, 1])
                 iteration = 0
@@ -49,7 +50,7 @@ def CEM():
                     # get images input from camera
                     # load the trained network, ??need more work
                     # performance = np.sum(Xs, axis=1) # for demonstration
-                    
+
                     performance = inference.eval(session=sess, feed_dict={
                         motions: Xs,
                         is_training: False
