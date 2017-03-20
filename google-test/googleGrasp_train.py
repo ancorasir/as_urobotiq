@@ -13,18 +13,21 @@ import googleGrasp as gg
 import googleGrasp_input as ggIn
 import tensorflow as tf
 
-batch_size = 10
-num_epochs = 2
+batch_size = 25 # 50 is too big
+num_epochs = 1
 learning_rate = 0.01
 
 def run_training():
     """Train googleGrasp"""
     # Tell TensorFlow that the model will be built into the default Graph.
     with tf.Graph().as_default():
+        global_step = tf.Variable(0, name='global_step', trainable=False)
+
         # list of all the tfrecord files under /grasping_dataset_058/
-        TRAIN_FILES = tf.train.match_filenames_once("/home/ancora-sirlab/grasp_dataset/grasping/grasping_dataset_058/grasping_dataset_058.tfrecord-00000-of-00068")
+        TRAIN_FILES = tf.train.match_filenames_once("/Users/wanfang/Downloads/datasets/grasping/grasping_dataset_058/grasping_dataset_058.tfrecord-00002-of-00068")
         # Input images and labels.
         images_batch, motions_batch, labels_batch = ggIn.inputs(TRAIN_FILES, batch_size=batch_size, num_epochs=num_epochs)
+
         # Build a Graph that computes predictions from the inference model.
         is_training = tf.placeholder(tf.bool, name='is_training')
         logits = gg.inference(images_batch, motions_batch, is_training)
@@ -32,12 +35,19 @@ def run_training():
         loss = gg.loss(logits,labels_batch)
 
         # Add to the Graph operations that train the model.
-        train_op = gg.training(loss, learning_rate)
+        train_op = gg.training(loss, learning_rate, global_step)
 
         # The op for initializing the variables.
         init_op = tf.group(tf.global_variables_initializer(), tf.local_variables_initializer())
+
+        # create a saver to load or save the trained variables
+        saver = tf.train.Saver()
+
         sess = tf.Session()
         sess.run(init_op)
+        # restore the trained variables
+        saver.restore(sess, tf.train.latest_checkpoint('./'))
+
         # Start input enqueue threads.
         # Queue runner is a thread that uses a session and calls an enqueue op over and over again.
         # start_queue_runners starts threads for all queue runners collected in the graph
@@ -62,6 +72,8 @@ def run_training():
 
     # Wait for threads to finish.
         coord.join(threads)
+        #saver = tf.train.Saver()
+        saver.save(sess, 'GraspNetwork', global_step = global_step)
         sess.close()
 
 def main(_):

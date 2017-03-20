@@ -69,7 +69,7 @@ def inputs(filenames, batch_size, num_epochs):
     with tf.name_scope('input'):
         # creates a FIFO queue for holding the filenames until the reader needs them. string_input_producer has options for shuffling and setting a maximum number of epochs. A queue runner adds the whole list of filenames to the queue once for each epoch. We grab a filename off our queue of filenames and use it to get examples from a TFRecordReader. Both the queue and the TFRecordReader have some state to keep track of where they are.
         # On initialization filename queue is empty. This is where the concept of QueueRunners comes in. It is simply a thread that uses a session and calls an enqueue op over and over again.
-        filename_queue = tf.train.string_input_producer(filenames, num_epochs=num_epochs)
+        filename_queue = tf.train.string_input_producer(filenames, shuffle=True, num_epochs=num_epochs)
         images, motions, labels = read_and_decode_single_example(filename_queue)
         # groups examples into batches randomly
         # shuffle_batch constructs a RandomShuffleQueue and proceeds to fill it with individual image and labels. This filling is done on a separate thread with a QueueRunner. The RandomShuffleQueue accumulates examples sequentially until it contains batch_size +min_after_dequeue examples are present. It then selects batch_size random elements from the queue to return.
