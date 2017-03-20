@@ -24,7 +24,7 @@ def run_training():
         global_step = tf.Variable(0, name='global_step', trainable=False)
 
         # list of all the tfrecord files under /grasping_dataset_058/
-        TRAIN_FILES = tf.train.match_filenames_once("/Users/wanfang/Downloads/datasets/grasping/grasping_dataset_058/grasping_dataset_058.tfrecord-00002-of-00068")
+        TRAIN_FILES = tf.train.match_filenames_once("/home/ancora-sirlab/grasp_dataset/grasping/grasping_dataset_058/grasping_dataset_058.tfrecord-00000-of-00068")
         # Input images and labels.
         images_batch, motions_batch, labels_batch = ggIn.inputs(TRAIN_FILES, batch_size=batch_size, num_epochs=num_epochs)
 
