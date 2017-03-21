@@ -1,2 +1,2 @@
-model_checkpoint_path: "GraspNetwork-21"
-all_model_checkpoint_paths: "GraspNetwork-21"
+model_checkpoint_path: "GraspNetwork-50"
+all_model_checkpoint_paths: "GraspNetwork-50"

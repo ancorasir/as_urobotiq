@@ -24,7 +24,7 @@ def run_training():
         global_step = tf.Variable(0, name='global_step', trainable=False)
 
         # list of all the tfrecord files under /grasping_dataset_058/
-        TRAIN_FILES = tf.train.match_filenames_once("/home/ancora-sirlab/grasp_dataset/grasping/grasping_dataset_058/grasping_dataset_058.tfrecord-00000-of-00068")
+        TRAIN_FILES = tf.train.match_filenames_once("/home/ancora-sirlab/grasp_dataset/grasping/grasping_dataset_058/grasping_dataset_058.tfrecord-00004-of-00068")
         # Input images and labels.
         images_batch, motions_batch, labels_batch = ggIn.inputs(TRAIN_FILES, batch_size=batch_size, num_epochs=num_epochs)
 
@@ -46,7 +46,8 @@ def run_training():
         sess = tf.Session()
         sess.run(init_op)
         # restore the trained variables
-        saver.restore(sess, tf.train.latest_checkpoint('./'))
+        # if training for the first time, just comment the restore command
+	saver.restore(sess, tf.train.latest_checkpoint('./'))
 
         # Start input enqueue threads.
         # Queue runner is a thread that uses a session and calls an enqueue op over and over again.
