@@ -8,7 +8,7 @@
 
 This is a project under-development at the Sustainable and Intelligent Robotics ([SIR](http://ancorasir.com)) Group , under the supervision of Dr. Chaoyang Song.
 
-as_urobotiq: A general purpose robot for autonomous pick-and-place with deep learning. Github.com/ancorasir/as_urobotiq, [![DOI](https://zenodo.org/badge/80539341.svg)](https://zenodo.org/badge/latestdoi/80539341)
+as_urobotiq: A general purpose robot for autonomous pick-and-place with deep learning. Github.com/ancorasir/as_urobotiq, [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.581804.svg)](https://doi.org/10.5281/zenodo.581804)
 
 Current branch: master. To simulate the robots, go to branch: ros-indigo. To test tensorflow, go to branch: tf
 
